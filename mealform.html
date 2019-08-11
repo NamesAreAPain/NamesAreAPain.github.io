@@ -42,7 +42,7 @@
             <h3> Regular Meals: <input id="regmeals" type="number" min=10 value=0></h3>
             <h3> Alternative Options </h3>
             <h4> Chicken Chef Salad </h4>
-            <div id="chefsaladopt">
+            <div id="chefsaladopt" class="chefsalad">
                 No Cheese: <input type="checkbox"  name="internal.cheese" value="Cheese">
                 No Beans: <input type="checkbox" name="internal.beans" value="Beans">
                 Count: <input class="saladnum" type="number" min=0 value=0>
@@ -51,7 +51,7 @@
             <button type="button" onclick="addchefsaladopt()">Add Salad Option</button><br>
             <br>
             <h4> Vegetarian Chef Salad </h4>
-            <div id="veggiesaladopt">
+            <div id="veggiesaladopt" class="vegsalad">
                 No Cheese: <input type="checkbox"  name="internal.cheese" value="Cheese">
                 No Beans: <input type="checkbox" name="internal.beans" value="Beans">
                 Count: <input class="saladnum" type="number" min=0 value=0>
@@ -70,27 +70,31 @@
         </form>
     </body>
     <script>
+        {
+            var today = new Date(2019,7,9,14,0,0,0);
+            var tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
 
-        var today = new Date(2019,7,9,14,0,0,0);
-var tomorrow = new Date();
-tomorrow.setDate(today.getDate() + 1);
-
-var dd = tomorrow.getDate();
-var mm = tomorrow.getMonth()+1; //January is 0!
-var yyyy = tomorrow.getFullYear();
-if(dd<10){
-    dd='0'+dd
-} 
-if(mm<10){
-    mm='0'+mm
-} 
-
-tomorrowstring = yyyy+'-'+mm+'-'+dd;
-document.getElementById("datefield").setAttribute("min", tomorrowstring);
-
-
+            var dd = tomorrow.getDate();
+            var mm = tomorrow.getMonth()+1; //January is 0!
+            var yyyy = tomorrow.getFullYear();
+            if(dd<10){
+                dd='0'+dd
+            } 
+            if(mm<10){
+                mm='0'+mm
+            } 
+            tomorrowstring = yyyy+'-'+mm+'-'+dd;
+            document.getElementById("datefield").setAttribute("min", tomorrowstring);
+        }
+var location_gfield = "loc";
+var date_gfield = "date";
+var regmeals_gfield = "regmeals";
+var chefsalad_gfields = ["chicken", "chicken no beans", "chicken no cheese", "chicken no cheese no beans"];
+// "chicken", "chicken no beans", "chicken no cheese", "chicken no cheese no beans" 
+var vegsalad_gfields = ["veg", "veg no beans", "veg no cheese", "veg no cheese no beans"];
+// "veg", "veg no beans", "veg no cheese", "veg no cheese no beans"
 var chefsaladoptcount = 1;
-var veggiesaladoptcount = 1;
 function addchefsaladopt(){
     if(chefsaladoptcount < 4){
         let cln = document.getElementById("chefsaladopt").cloneNode(true);
@@ -100,6 +104,7 @@ function addchefsaladopt(){
     }
 }
 
+var veggiesaladoptcount = 1;
 function addveggiesaladopt(){
     if(veggiesaladoptcount < 4){
         let cln = document.getElementById("veggiesaladopt").cloneNode(true);
@@ -128,7 +133,7 @@ function submitform(){
         if( targetdate.getDate() == tomorrow.getDate()){
             if(today.getHours() > 13){
                 form_invalid = true;
-                reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call main office");
+                reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call kitchen");
             }
         }
         if( targetdate.getDay() == 0 || targetdate.getDay() == 6){
@@ -137,10 +142,10 @@ function submitform(){
         }
         let day3beforetarget = new Date();
         day3beforetarget.setDate(targetdate.getDate()-3);
-        if( today.getDay() == 5 && today.getDate() == day3beforetarget.getDate()){	
+        if( (today.getDay() >= 5 || today.getDay() == 0) && today >= day3beforetarget ){	
             if(today.getHours() > 13){
                 form_invalid = true;
-                reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call main office");
+                reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call kitchen");
             }
         }
 
@@ -170,7 +175,18 @@ function submitform(){
         reasons.push("Total number of drinks must not exceed number of meals and salads");
     }
     if( !form_invalid){
-        document.getElementById("theform").submit();
+        alert("Submission Not Yet Implemented");
+        for (let x of document.getElementsByClassName("chefsalad")){
+            let idx = x.children[0].checked * 2 + x.children[1].checked * 1
+            x.children[2].name = chefsalad_gfields[idx]
+        }
+        for (let x of document.getElementsByClassName("vegsalad")){ 
+            let idx = x.children[0].checked * 2 + x.children[1].checked * 1
+            x.children[2].name = vegsalad_gfields[idx]
+        }
+        console.log(document.getElementsByClassName("chefsalad"));
+        console.log(document.getElementsByClassName("vegsalad"));
+        //document.getElementById("theform").submit();
     } else {
         let el1 = document.getElementById("errmsg");
         el1.innerHTML = reasons.join("\n");
