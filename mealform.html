@@ -6,7 +6,7 @@
     <body>
         <h1> Spectrum Meal Form Submission </h1>
         <form id="theform" name="input.name" action="" method="POST">
-            Location: <select name="Locations" required="">
+            Location: <select id="location" required="">
                 <option value="ASHLAND">ASHLAND</option>
                 <option value="BANCROFT">BANCROFT</option>
                 <option value="BETH EDEN">BETH EDEN</option>
@@ -60,9 +60,9 @@
             <button type="button" onclick="addveggiesaladopt()">Add Salad Option</button><br>
             <br>
             <div id="drinks">
-                Juice Count: <input type="number" min=0 value=0><br>
-                Milk Count: <input type="number" min=0 value=0><br>
-                Soy Milk Count: <input type="number" min=0 value=0><br>
+                Juice Count: <input id="juice" type="number" min=0 value=0><br>
+                Milk Count: <input id="milk" type="number" min=0 value=0><br>
+                Soy Milk Count: <input id="soymilk" type="number" min=0 value=0><br>
             </div>
             <pre id="errmsg"></pre>
             <br>
@@ -87,13 +87,30 @@
             tomorrowstring = yyyy+'-'+mm+'-'+dd;
             document.getElementById("datefield").setAttribute("min", tomorrowstring);
         }
+var google_form_url = "";
+document.getElementById("theform").action = google_form_url;
+
 var location_gfield = "loc";
+document.getElementById("location").name = location_gfield;
 var date_gfield = "date";
+document.getElementById("datefield").name = date_gfield;
 var regmeals_gfield = "regmeals";
+document.getElementById("regmeals").name = regmeals_gfield;
 var chefsalad_gfields = ["chicken", "chicken no beans", "chicken no cheese", "chicken no cheese no beans"];
 // "chicken", "chicken no beans", "chicken no cheese", "chicken no cheese no beans" 
 var vegsalad_gfields = ["veg", "veg no beans", "veg no cheese", "veg no cheese no beans"];
 // "veg", "veg no beans", "veg no cheese", "veg no cheese no beans"
+var juices_gfield = "juices";
+document.getElementById("juice").name = juices_gfield;
+var milks_gfield = "milks";
+document.getElementById("milk").name = milks_gfield;
+var soymilks_gfield = "soymilks";
+document.getElementById("soymilk").name = soymilks_gfield;
+
+
+
+
+
 var chefsaladoptcount = 1;
 function addchefsaladopt(){
     if(chefsaladoptcount < 4){
@@ -175,7 +192,6 @@ function submitform(){
         reasons.push("Total number of drinks must not exceed number of meals and salads");
     }
     if( !form_invalid){
-        alert("Submission Not Yet Implemented");
         for (let x of document.getElementsByClassName("chefsalad")){
             let idx = x.children[0].checked * 2 + x.children[1].checked * 1
             x.children[2].name = chefsalad_gfields[idx]
@@ -184,9 +200,7 @@ function submitform(){
             let idx = x.children[0].checked * 2 + x.children[1].checked * 1
             x.children[2].name = vegsalad_gfields[idx]
         }
-        console.log(document.getElementsByClassName("chefsalad"));
-        console.log(document.getElementsByClassName("vegsalad"));
-        //document.getElementById("theform").submit();
+        document.getElementById("theform").submit();
     } else {
         let el1 = document.getElementById("errmsg");
         el1.innerHTML = reasons.join("\n");
