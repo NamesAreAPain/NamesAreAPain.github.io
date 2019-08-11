@@ -39,13 +39,13 @@
                 <option value="OLR">OLR</option>
             </select><br>
             Date: <input id="datefield" type="date" name="input.name"  min='2019-5-3'><br>
-            <h3> Regular Meals: <input id="regmeals" type="number" min=10></h3>
+            <h3> Regular Meals: <input id="regmeals" type="number" min=10 value=0></h3>
             <h3> Alternative Options </h3>
             <h4> Chicken Chef Salad </h4>
             <div id="chefsaladopt">
                 No Cheese: <input type="checkbox"  name="internal.cheese" value="Cheese">
                 No Beans: <input type="checkbox" name="internal.beans" value="Beans">
-                Count: <input class="saladnum" type="number" min=0>
+                Count: <input class="saladnum" type="number" min=0 value=0>
             </div>
             <div id="chickenendopts"></div>
             <button type="button" onclick="addchefsaladopt()">Add Salad Option</button><br>
@@ -54,15 +54,15 @@
             <div id="veggiesaladopt">
                 No Cheese: <input type="checkbox"  name="internal.cheese" value="Cheese">
                 No Beans: <input type="checkbox" name="internal.beans" value="Beans">
-                Count: <input class="saladnum" type="number" min=0>
+                Count: <input class="saladnum" type="number" min=0 value=0>
             </div>
             <div id="veggieendopts"></div>
             <button type="button" onclick="addveggiesaladopt()">Add Salad Option</button><br>
             <br>
             <div id="drinks">
-                Juice Count: <input type="number" min=0><br>
-                Milk Count: <input type="number" min=0><br>
-                Soy Milk Count: <input type="number" min=0><br>
+                Juice Count: <input type="number" min=0 value=0><br>
+                Milk Count: <input type="number" min=0 value=0><br>
+                Soy Milk Count: <input type="number" min=0 value=0><br>
             </div>
             <pre id="errmsg"></pre>
             <br>
@@ -71,7 +71,7 @@
     </body>
     <script>
 
-var today = new Date(2019,7,9,14,0,0,0);
+        var today = new Date(2019,7,9,14,0,0,0);
 var tomorrow = new Date();
 tomorrow.setDate(today.getDate() + 1);
 
@@ -94,6 +94,7 @@ var veggiesaladoptcount = 1;
 function addchefsaladopt(){
     if(chefsaladoptcount < 4){
         let cln = document.getElementById("chefsaladopt").cloneNode(true);
+        cln.children[2].value = 0;
         document.getElementById("chickenendopts").insertAdjacentElement("beforebegin",cln);
         chefsaladoptcount += 1;
     }
@@ -102,6 +103,7 @@ function addchefsaladopt(){
 function addveggiesaladopt(){
     if(veggiesaladoptcount < 4){
         let cln = document.getElementById("veggiesaladopt").cloneNode(true);
+        cln.children[2].value = 0;
         document.getElementById("veggieendopts").insertAdjacentElement("beforebegin",cln);
         veggiesaladoptcount += 1;
     }
@@ -118,6 +120,30 @@ function submitform(){
     let targetdate = null;
     if( document.getElementById("datefield").value){
         targetdate = parseISOLocal(document.getElementById("datefield").value);
+
+        if( targetdate < tomorrow){
+            form_invalid = true;
+            reasons.push("Date must be a future date");
+        }
+        if( targetdate.getDate() == tomorrow.getDate()){
+            if(today.getHours() > 13){
+                form_invalid = true;
+                reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call main office");
+            }
+        }
+        if( targetdate.getDay() == 0 || targetdate.getDay() == 6){
+            form_invalid = true;
+            reasons.push("Meal Date cannot be weekend");
+        }
+        let day3beforetarget = new Date();
+        day3beforetarget.setDate(targetdate.getDate()-3);
+        if( today.getDay() == 5 && today.getDate() == day3beforetarget.getDate()){	
+            if(today.getHours() > 13){
+                form_invalid = true;
+                reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call main office");
+            }
+        }
+
     } else {
         form_invalid = true;
         reasons.push("Meal Date required");
@@ -125,28 +151,6 @@ function submitform(){
     if( Intl.DateTimeFormat().resolvedOptions().timeZone != "America/Los_Angeles"){
         form_invalid = true;
         reasons.push("Your system timezone is not Pacific Time, please fix.");
-    }
-    if( targetdate < tomorrow){
-        form_invalid = true;
-        reasons.push("Date must be a future date");
-    }
-    if( targetdate.getDate() == tomorrow.getDate()){
-        if(today.getHours() > 13){
-            form_invalid = true;
-            reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call main office");
-        }
-    }
-    if( targetdate.getDay() == 0 || targetdate.getDay() == 6){
-        form_invalid = true;
-        reasons.push("Meal Date cannot be weekend");
-    }
-    let day3beforetarget = new Date();
-    day3beforetarget.setDate(targetdate.getDate()-3);
-    if( today.getDay() == 5 && today.getDate() == day3beforetarget.getDate()){	
-        if(today.getHours() > 13){
-            form_invalid = true;
-            reasons.push("Online Submission cutoff must be received before 1PM on the business day prior to meal date, Please call main office");
-        }
     }
     let mealcnt = parseInt(document.getElementById("regmeals").value);
     if( mealcnt < 10){
