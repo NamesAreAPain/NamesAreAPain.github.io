@@ -3,16 +3,21 @@
     <link rel="stylesheet" type="text/css" href="biopage.css">
 </head> 
 
-<div class="navbar">
+<div id="navbar" class="navbar">
     <img src="testicon.jpg" align="middle"></img>
     <div> #somelongtestpagename </div>
-    <a class="navmenubutton" href="#menu">&#9776;</a>
+    <a class="navmenubutton" onclick='expandMenu()' >&#9776;</a>
+</div>
+<div class="expandedmenu" id="expmenu" hidden>    
+    <span><a href="">Placeholder 1</a></span>
+    <span><a href="">Placeholder 2</a></span>
+    <span><a href="">Placeholder 3</a></span>
 </div>
 <body>
 <div class="intro">
 
     <div class="portrait">
-        <img src="wideimage.png">
+        <img id="biopicture" src="wideimage.png">
     </div>
     <div class="bio">
         <h1> Test Site </h1>
@@ -33,9 +38,12 @@
     <a href="" class="projectbox"> Snap </a>
     <a href="" class="projectbox"> Crackle </a>
     <a href="" class="projectbox"> Pop </a>
+    <a href="" class="projectbox"> Jounce </a>
 </div>
 <div class="contactinfo">
     <p> Hey, I just met you, and this is crazy,
-    but here's my number: 867-5309.
+    but here's my number: 867-5309. </p>
 </div>
 </body>
+<script src="biopage.js">
+</script>
