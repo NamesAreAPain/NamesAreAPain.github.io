@@ -9,10 +9,18 @@ function toggleHidden(id) {
 }
 function expandMenu(){
     let exp = document.getElementById("expmenu");
-    console.log("toggle");
     if(exp.style.display == "table"){
         exp.style.display = "none";
     } else {
         exp.style.display = "table";
+    }
+}
+function expandSubMenu(smc){
+    let sml = document.getElementsByClassName(smc);
+    console.log("sm toggle");
+    if(sml[0].classList.contains("hidden")){
+        Array.prototype.slice.call(sml).map(x => x.classList.remove("hidden"));
+    } else { 
+        Array.prototype.slice.call(sml).map(x => x.classList.add("hidden"));
     }
 }

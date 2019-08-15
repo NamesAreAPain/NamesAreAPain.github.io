@@ -50,10 +50,11 @@ body {
     top: 50px; 
     background: #333;
     width: 100%;
-    height: 50%;
 }
 .expandedmenu span {
     display: table-row;
+    padding: auto;
+    height: 10vh;
 }
 .expandedmenu a {
     color: #f2f2f2;
@@ -64,10 +65,20 @@ body {
     padding-bottom: auto;
     width: 100%;
     font-size: x-large;
+    cursor: pointer;
 }
 .expandedmenu a:hover{
     color: black;
     background: #ddd;
+}
+.expandedmenu span.hidden{
+    display: none;
+}
+.expandedmenu span.submenu{
+    height: 5vh;
+}
+.submenu a{
+    font-size: medium;
 }
 .intro {
     position: absolute;

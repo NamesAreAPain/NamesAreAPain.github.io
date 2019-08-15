@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
     <link rel="stylesheet" type="text/css" href="biopage.css">
+    <link rel="stylesheet" type-"text/css" href="hideable.css">
 </head> 
 
 <div id="navbar" class="navbar">
@@ -9,7 +10,9 @@
     <a class="navmenubutton" onclick='expandMenu()' >&#9776;</a>
 </div>
 <div class="expandedmenu" id="expmenu" hidden>    
-    <span><a href="">Placeholder 1</a></span>
+    <span><a onclick='expandSubMenu("sm1")'>Placeholder 1</a></span>
+    <span class="submenu sm1 hidden"><a href="">SubPlaceholder 1</a></span>
+    <span class="submenu sm1 hidden"><a href="">SubPlaceholder 2</a></span>
     <span><a href="">Placeholder 2</a></span>
     <span><a href="">Placeholder 3</a></span>
 </div>
