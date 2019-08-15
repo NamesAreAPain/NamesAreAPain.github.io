@@ -1,0 +1,38 @@
+body {
+    display: block;
+    background: tan;
+}
+.pagetitle {
+    background: gray;
+    display: block;
+}
+.pagetitle h1 {
+    padding-left: 10%;
+}
+
+.bioblock {
+    background: tan;
+    display: block;
+    overflow: wrap;
+    width: 25vw;
+    margin-left: 5vw;
+}
+
+@media screen and (orientation:portrait){
+    .bioblock {
+        width: 80vw;
+        margin-left: 5vw;
+    }
+}
+
+.imagereel {
+    height: 40vh;
+    display: flex;
+    align-items: center;
+    background: gray;
+    overflow-x: scroll;
+}
+.imagereel img {
+    height: 90%;
+    padding: 0px 50px;
+}
