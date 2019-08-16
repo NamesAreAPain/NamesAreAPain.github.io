@@ -11,6 +11,11 @@ body {
     display: cover;
     z-index: 10000;
 }
+.navbar.reserve{
+    position: static;
+    z-index: 0;
+    visibility: hidden;
+}
 .navbar a {
     float: right;
     display: block;
@@ -215,7 +220,6 @@ body {
     color: white;
     text-align: center;
 }
-
 
 .main {
     margin-top: 60px;
